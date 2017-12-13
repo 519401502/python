@@ -1,6 +1,8 @@
 # coding=UTF-8
 
 # 创建文件，并写入文件
+import urllib
+
 f = open("t.txt", "w")
 f.write("写入t.txt")
 f.close()
@@ -23,6 +25,10 @@ class Text:
     publict = ''
     __ss__ = ""
     def text(self):
+
+        return
+
+    def text2(self):
 
         return
 

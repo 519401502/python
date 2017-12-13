@@ -2,8 +2,14 @@
 import sys
 
 
+
+
 # --- 迭代式实例开始
 # 生成器函数 - 斐波那契
+import urllib2
+from lib2to3.pgen2 import parse, parse
+
+
 def fibonacci(n):
     a, b, counter = 0, 1, 0
     while True:
@@ -51,3 +57,5 @@ def fun1():
 
 fun1()
 
+urltext = ""
+urllib.urlopen(urltext)
