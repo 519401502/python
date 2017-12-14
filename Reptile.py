@@ -98,7 +98,7 @@ def parsePage(html):
 i = 10
 def parseYellow():
     while True:
-        j = 3
+        j = 10
         setting = json.loads(requests.get('http://m.jilehezi.com/api/v1.2/?page='+ str(j)).text)
         j = j + 1
         lists = setting['data']['items']
@@ -126,6 +126,8 @@ def parseYellow():
 if __name__ == '__main__':
     # main()
     parseYellow()
+
+
 
 
 
