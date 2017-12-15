@@ -123,9 +123,8 @@ def parseYellow():
 
 
 
-if __name__ == '__main__':
-    # main()
-    parseYellow()
+# if __name__ == '__main__':
+#     parseYellow()
 
 
 
