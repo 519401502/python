@@ -8,13 +8,15 @@ import time
 import sys
 from bs4 import BeautifulSoup
 
+# 菜鸟教程爬取
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 connect = MySQLdb.connect(host='localhost', port=3306, user='root', passwd='123456', db='rookie', charset='utf8')
 cursor = connect.cursor()
 
-def start(url):
+def start(url, page):
     maincontent = requests.get(url)
     divs = BeautifulSoup(maincontent.content, 'html.parser')
 
@@ -36,11 +38,11 @@ def start(url):
     # 标题
     print divs.find('meta', attrs={'name':'keywords'})['content']
     title = divs.find('meta', attrs={'name':'keywords'})['content']
-    connectionMySql(type, title, content)
+    connectionMySql(type, title, content, page)
 
 
 
-def connectionMySql(type, title, content):
+def connectionMySql(type, title, content, page):
 
     # cursor.execute('insert into src VALUES('
     #                + str(uuid.uuid1())
@@ -60,12 +62,13 @@ def connectionMySql(type, title, content):
     # print sql
     # cursor.execute(sql)
 
-    # number = cursor.execute("select * from src WHERE title='" + title1 + "'" + "and type='" + type1 + "'")
-    # if number > 0:
-    #     print '内容重复，数据未重复存储'
-    #     return
-    sql1 = "insert into src VALUES(%s, %s, %s, %s, %s)"
-    cursor.execute(sql1, (id1, type1, title1, content1, time1))
+    number = cursor.execute("select * from src WHERE title='" + title1 + "'" + "and type='" + type1 + "'")
+    if number > 0:
+        print '内容重复，数据未重复存储'
+        return
+
+    sql1 = "insert into src VALUES(%s, %s, %s, %s, %s, %s)"
+    cursor.execute(sql1, (id1, type1, title1, content1, time1, page))
     print '已爬取'+ title1
 
 
@@ -90,23 +93,22 @@ def getSonURL(url):
     lists = soup.find('div', attrs={'class': 'col left-column'})
     sons = lists.find('div', attrs={'class': 'design'})
     sonsas = sons.find_all('a')
+    page = 0
     for item in sonsas:
         # print '开始爬取'+ item['href']
         # urlstr = item['href']
+        page += 1
         if len(item['href'].split('/')) == 3:
             # print 'http://www.runoob.com' + item['href']
-            start('http://www.runoob.com' + item['href'])
+            start('http://www.runoob.com' + item['href'], page = page)
         elif len(item['href'].split('/')) == 1:
             # print 'http://www.runoob.com/' + tag + '/' +item['href']
-            start('http://www.runoob.com/' + tag + '/' +item['href'])
+            start('http://www.runoob.com/' + tag + '/' +item['href'], page = page)
 
 if __name__ == '__main__':
     # getURL()
     # start('http://www.runoob.com/html/html-attributes.html')
     # getSonURL('http://www.runoob.com/php/php-tutorial.html')
-    # url = 'htmlhtml5-browsers.html'
-    # print len(url.split('/'))
-    # number = cursor.execute("select * from src WHERE title='" + "2" + "'" + "and type='" + "1" + "'")
-    # print number
-    # print cursor.execute("select * from src WHERE type='SQLite 教程'")
-    print '  dsfsa  '
+    number = cursor.execute("select * from src WHERE type='C 教程'")
+    print number
+
